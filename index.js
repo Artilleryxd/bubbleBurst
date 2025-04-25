@@ -50,8 +50,10 @@ function create() {
 
     pumpHandle = this.add.image(pumpX, pumpY - 300, "pumpHandle").setInteractive();
     pumpHandle.setDepth(3);
-    this.add.image(pumpX - 300, pumpY - 50, "pumpPipe").setDepth(3);
-    this.add.image(pumpX, pumpY, "pumpBase").setDepth(3);
+    pumpBase = this.add.image(pumpX - 300, pumpY - 50, "pumpPipe");
+    pumpBase.setDepth(3);
+    pumpPipe = this.add.image(pumpX, pumpY, "pumpBase");
+    pumpPipe.setDepth(3);
 
     pumpHandle.on('pointerdown', () => {
         // Prevent pump spamming
@@ -145,7 +147,7 @@ function animatePumpHandle() {
     this.tweens.add({
         targets: pumpHandle,
         y: originalY + 70,
-        duration: 200,
+        duration: 100,
         yoyo: true,
         ease: "Power2",
         onComplete: () => {
@@ -154,14 +156,27 @@ function animatePumpHandle() {
     });
 
     this.tweens.add({
-        targets: pumpHandle,
-        angle: 10,
-        duration: 200,
+        targets: pumpBase,
+        scaleY: 0.95,
+        scaleX: 1.05,
+        duration: 100,
         yoyo: true,
-        repeat: 1,
         ease: "Sine.easeInOut",
         onComplete: () => {
-            pumpHandle.angle = 0; // Reset angle after animation
+            pumpBase.setScale(1);
+            pumpPipe.setScale(1);
+        }
+    });
+    this.tweens.add({
+        targets:  pumpPipe,
+        scaleY: 0.8,
+        scaleX: 1.1,
+        duration: 100,
+        yoyo: true,
+        ease: "Sine.easeInOut",
+        onComplete: () => {
+            pumpBase.setScale(1);
+            pumpPipe.setScale(1);
         }
     });
 
